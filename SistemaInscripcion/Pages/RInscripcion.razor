@@ -9,6 +9,7 @@
 		<div class="input-group col-sm-3">
 			<InputNumber @bind-Value="@Inscripcion.InscripcionId" class="form-control" />
 			<ValidationMessage For="@(()=>Inscripcion.InscripcionId)" />
+			<button type="button" class="btn btn-outline-info" @onclick="Buscar">Buscar</button>
 		</div>
 	</div>
 
@@ -56,12 +57,12 @@
 
 	<div class="form-group">
 		<label for="fecha">Fecha</label>
-		<InputNumber @bind-Value="@Inscripcion.Fecha" class="form-control" />
+		<InputDate @bind-Value="@Inscripcion.Fecha" class="form-control" />
 		<ValidationMessage For="@(()=>Inscripcion.Fecha)" />
 	</div>
 
 	<div class="form-group">
-		<button type="button" class="btn btn-outline-secondary">Limpiar</button>
+		<button type="button" class="btn btn-outline-secondary" @onclick="Limpiar">Limpiar</button>
 		<button type="submit" class="btn btn-outline-success">Guardar</button>
 		<button type="button" class="btn btn-outline-danger" @onclick="Eliminar">Eliminar</button>
 	</div>
@@ -124,6 +125,12 @@
 		{
 			mensaje = "Error al Eliminar";
 		}
+	}
+
+	public void Limpiar()
+	{
+		mensaje = "";
+		this.Inscripcion = new Inscripcion();
 	}
 
 }
