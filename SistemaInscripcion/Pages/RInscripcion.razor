@@ -1,0 +1,129 @@
+﻿@page "/inscripcion"
+<h3>RInscripcion</h3>
+
+<EditForm Model="Inscripcion" OnValidSubmit="Guardar">
+	<DataAnnotationsValidator />
+
+	<div class="form-group">
+		<label for="InscripcionId">Inscripcion Id</label>
+		<div class="input-group col-sm-3">
+			<InputNumber @bind-Value="@Inscripcion.InscripcionId" class="form-control" />
+			<ValidationMessage For="@(()=>Inscripcion.InscripcionId)" />
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="estudianteId">Estudiante Id</label>
+		<InputNumber @bind-Value="@Inscripcion.EstudianteId" class="form-control" />
+		<ValidationMessage For="@(()=>Inscripcion.EstudianteId)" />
+	</div>
+
+	<div class="form-group">
+		<label for="Semestre">Semestre</label>
+		<InputText @bind-Value="@Inscripcion.Semestre" class="form-control" />
+		<ValidationMessage For="@(()=>Inscripcion.Semestre)" />
+	</div>
+
+	<div class="form-group">
+		<label for="Limite">Limite de Creditos</label>
+		<InputNumber @bind-Value="@Inscripcion.Limite" class="form-control" />
+		<ValidationMessage For="@(()=>Inscripcion.Limite)" />
+	</div>
+
+	<div class="form-group">
+		<label for="tomado">Creditos Tomados</label>
+		<InputNumber @bind-Value="@Inscripcion.Tomados" class="form-control" />
+		<ValidationMessage For="@(()=>Inscripcion.Tomados)" />
+	</div>
+
+	<div class="form-group">
+		<label for="disponible">Creditos Disponible</label>
+		<InputNumber @bind-Value="@Inscripcion.Disponible" class="form-control" />
+		<ValidationMessage For="@(()=>Inscripcion.Disponible)" />
+	</div>
+
+	<div class="form-group">
+		<label for="monto">Monto</label>
+		<InputNumber @bind-Value="@Inscripcion.Monto" class="form-control" />
+		<ValidationMessage For="@(()=>Inscripcion.Monto)" />
+	</div>
+
+	<div class="form-group">
+		<label for="balance">Balance</label>
+		<InputNumber @bind-Value="@Inscripcion.Balance" class="form-control" />
+		<ValidationMessage For="@(()=>Inscripcion.Balance)" />
+	</div>
+
+	<div class="form-group">
+		<label for="fecha">Fecha</label>
+		<InputNumber @bind-Value="@Inscripcion.Fecha" class="form-control" />
+		<ValidationMessage For="@(()=>Inscripcion.Fecha)" />
+	</div>
+
+	<div class="form-group">
+		<button type="button" class="btn btn-outline-secondary">Limpiar</button>
+		<button type="submit" class="btn btn-outline-success">Guardar</button>
+		<button type="button" class="btn btn-outline-danger" @onclick="Eliminar">Eliminar</button>
+	</div>
+
+	<h5 class="text-success">@mensaje</h5>
+
+
+</EditForm>
+
+
+
+@code {
+
+	public Inscripcion Inscripcion = new Inscripcion();
+	public string mensaje = "";
+
+	public void Guardar()
+	{
+		InscripncionController controller = new InscripncionController();
+
+		if (controller.Guardar(Inscripcion))
+		{
+			mensaje = "Inscripcion Guardada";
+		}
+		else
+		{
+			mensaje = "Error al guardar Inscripcion";
+		}
+	}
+
+	public void Buscar()
+	{
+		InscripncionController controller = new InscripncionController();
+
+		var inscripcion = controller.Buscar(Inscripcion.InscripcionId);
+
+		if (inscripcion!=null)
+		{
+			Inscripcion = inscripcion;
+		}
+		else
+		{
+			mensaje = "Inscripcion no existe";
+		}
+	}
+
+	public void Eliminar()
+	{
+		InscripncionController controller = new InscripncionController();
+
+
+		var inscripcion = controller.Buscar(Inscripcion.InscripcionId);
+
+		if (inscripcion!=null)
+		{
+			controller.Eliminar(Inscripcion.InscripcionId);
+			mensaje = "Inscripcion Eliminada";
+		}
+		else
+		{
+			mensaje = "Error al Eliminar";
+		}
+	}
+
+}

@@ -11,7 +11,7 @@ namespace SistemaInscripcion.Controller
 {
     public class InscripncionController
     {
-        public bool Insertar(Inscripcion inscripcion)
+        public bool Guardar(Inscripcion inscripcion)
         {
             Contexto contexto = new Contexto();
             bool paso = false;
@@ -20,7 +20,7 @@ namespace SistemaInscripcion.Controller
             {
                 if (inscripcion.InscripcionId==0)
                 {
-                    paso = Guardar(inscripcion);
+                    paso = Insertar(inscripcion);
                 }
                 else
                 {
@@ -36,7 +36,7 @@ namespace SistemaInscripcion.Controller
             return paso;
         }
 
-    private bool Guardar(Inscripcion inscripcion)
+    private bool Insertar(Inscripcion inscripcion)
     {
         Contexto contexto = new Contexto();
         bool paso = false;
