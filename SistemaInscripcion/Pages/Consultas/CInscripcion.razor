@@ -1,0 +1,49 @@
+﻿@page "/cinscripcion"
+<h3>Consulta de Inscripcion</h3>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>Inscripcion Id</th>
+			<th>Estudiante Id</th>
+			<th>Semestre</th>
+			<th>Limite de Creditos</th>
+			<th>Creditos Tomados</th>
+			<th>Creditos Disponible</th>
+			<th>Fecha</th>
+			<th>Monto</th>
+			<th>Balance</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in lista)
+		{
+		<tr>
+			<th>@item.InscripcionId</th>
+			<th>@item.EstudianteId</th>
+			<th>@item.Semestre</th>
+			<th>@item.Limite</th>
+			<th>@item.Tomados</th>
+			<th>@item.Disponible</th>
+			<th>@item.Fecha.ToString("dd/MM/yyyy")</th>
+			<th>@item.Monto</th>
+			<th>@item.Balance</th>
+			<td><a class="btn btn-sm btn-outline-primary" href="inscripcion">Ver</a></td>
+		</tr>
+		}
+	</tbody>
+</table>
+
+@code {
+
+	public List<Inscripcion> lista;
+
+	protected override void OnInitialized()
+	{
+		InscripncionController controller = new InscripncionController();
+
+		lista = controller.GetInscripcions(e => true);
+	}
+
+	
+}

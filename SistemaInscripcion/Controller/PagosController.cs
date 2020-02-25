@@ -9,34 +9,22 @@ using System.Threading.Tasks;
 
 namespace SistemaInscripcion.Controller
 {
-    public class InscripncionController
+    public class PagosController
     {
-        public Estudiantes Estudiante { get; set; }
-
-        public bool Guardar(Inscripcion inscripcion)
+        public bool Guardar(Pagos pago)
         {
             Contexto contexto = new Contexto();
-            EstudianteController controllerEst = new EstudianteController();
             bool paso = false;
-
             try
             {
-                if (inscripcion.InscripcionId == 0)
+                if (pago.PagoId == 0)
                 {
-                   // var estudiante = controllerEst.Buscar(Estudiante.EstudianteId);
-
-                   // if (estudiante != null)
-                   // {
-                   //     estudiante.Balance += inscripcion.Monto;
-                   //}
-                  //  estudiante.Balance += inscripcion.Monto;
-                    paso = Insertar(inscripcion);
+                    paso = Insertar(pago);
                 }
                 else
                 {
-                    paso = Modificar(inscripcion);
+                    paso = Modificar(pago);
                 }
-                
             }
             catch (Exception)
             {
@@ -46,96 +34,91 @@ namespace SistemaInscripcion.Controller
             return paso;
         }
 
-    private bool Insertar(Inscripcion inscripcion)
-    {
-        Contexto contexto = new Contexto();
-        bool paso = false;
-
-            try
-            {
-                contexto.Inscripcion.Add(inscripcion);
-                paso = contexto.SaveChanges() > 0;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            return paso;
-    }
-
-     private bool Modificar(Inscripcion inscripcion)
+        private bool Insertar(Pagos pago)
         {
             Contexto contexto = new Contexto();
             bool paso = false;
 
             try
             {
-                contexto.Inscripcion.Add(inscripcion);
-                contexto.Entry(inscripcion).State = EntityState.Modified;
+                contexto.Pagos.Add(pago);
                 paso = contexto.SaveChanges() > 0;
             }
             catch (Exception)
             {
-
                 throw;
             }
             return paso;
         }
 
-    public Inscripcion Buscar(int id)
-        {
-            Contexto contexto = new Contexto();
-            Inscripcion inscripcion = new Inscripcion();
-
-            try
-            {
-                inscripcion = contexto.Inscripcion.Find(id);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            return inscripcion;
-        }
-
-    public bool Eliminar(int id)
+        private bool Modificar(Pagos pago)
         {
             Contexto contexto = new Contexto();
             bool paso = false;
-            Inscripcion inscripcion = new Inscripcion();
 
             try
             {
-                inscripcion = contexto.Inscripcion.Find(id);
-                contexto.Entry(inscripcion).State = EntityState.Deleted;
+                contexto.Pagos.Add(pago);
+                contexto.Entry(pago).State = EntityState.Modified;
                 paso = contexto.SaveChanges() > 0;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return paso;
+        }
+
+        public Pagos Buscar(int id)
+        {
+            Contexto contexto = new Contexto();
+            Pagos pago = new Pagos();
+
+            try
+            {
+                pago = contexto.Pagos.Find(id);
             }
             catch (Exception)
             {
 
                 throw;
             }
-            return paso;
+            return pago;
         }
-    public List<Inscripcion> GetInscripcions(Expression<Func<Inscripcion, bool>> expression)
+
+        public bool Eliminar(int id)
         {
             Contexto contexto = new Contexto();
-            List<Inscripcion> lista;
+            bool paso = false;
+            Pagos pago = new Pagos();
 
             try
             {
-                lista = contexto.Inscripcion.Where(expression).ToList();
+                pago = contexto.Pagos.Find(id);
+                contexto.Entry(pago).State = EntityState.Deleted;
+                paso = contexto.SaveChanges() > 0;
+
             }
             catch (Exception)
             {
+                throw;
+            }
+            return paso;
+        }
 
+        public List<Pagos> GetPagos(Expression<Func<Pagos, bool>> expression)
+        {
+            List<Pagos> lista;
+            Contexto contexto = new Contexto();
+            try
+            {
+                lista = contexto.Pagos.Where(expression).ToList();
+            }
+            catch (Exception)
+            {
                 throw;
             }
             return lista;
         }
-
-
     }
 }

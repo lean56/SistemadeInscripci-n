@@ -15,8 +15,16 @@
 
 	<div class="form-group">
 		<label for="estudianteId">Estudiante Id</label>
-		<InputNumber @bind-Value="@Inscripcion.EstudianteId" class="form-control" />
-		<ValidationMessage For="@(()=>Inscripcion.EstudianteId)" />
+		<div class="input-group col-sm-3">
+			<InputNumber @bind-Value="@Estudiante.EstudianteId" class="form-control"/>
+			<ValidationMessage For="@(()=>Estudiante.EstudianteId)" />
+			<button type="button" class="btn btn-outline-info" @onclick="BuscarEstudiante">Buscar Estudiante</button>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="estudiante">Nombre</label>
+		<InputText @bind-Value="@Estudiante.Nombres" class="form-control" />
+		<ValidationMessage For="@(()=>Estudiante.Nombres)" />
 	</div>
 
 	<div class="form-group">
@@ -33,7 +41,7 @@
 
 	<div class="form-group">
 		<label for="tomado">Creditos Tomados</label>
-		<InputNumber @bind-Value="@Inscripcion.Tomados" class="form-control" />
+		<InputNumber @bind-Value="@Inscripcion.Tomados" class="form-control" @oninput="CalcularMonto" @onfocusin="CalcularMonto" @onfocusout="CalcularMonto"/>
 		<ValidationMessage For="@(()=>Inscripcion.Tomados)" />
 	</div>
 
@@ -45,7 +53,7 @@
 
 	<div class="form-group">
 		<label for="monto">Monto</label>
-		<InputNumber @bind-Value="@Inscripcion.Monto" class="form-control" />
+		<InputNumber @bind-Value="@Inscripcion.Monto" class="form-control" @oninput="CalcularMonto"  @onfocusin="CalcularMonto" @onfocusout="CalcularMonto" />
 		<ValidationMessage For="@(()=>Inscripcion.Monto)" />
 	</div>
 
@@ -77,14 +85,29 @@
 @code {
 
 	public Inscripcion Inscripcion = new Inscripcion();
+	public Estudiantes Estudiante = new Estudiantes();
+
+
 	public string mensaje = "";
+
+
 
 	public void Guardar()
 	{
 		InscripncionController controller = new InscripncionController();
+		EstudianteController controllerEst = new EstudianteController();
 
+		CalcularMonto();
+		var estudiante = controllerEst.Buscar(Estudiante.EstudianteId);
+
+		if (estudiante != null)
+		{
+			 Estudiante.Balance  += Inscripcion.Balance;
+		}
+		Inscripcion.EstudianteId = Estudiante.EstudianteId;
 		if (controller.Guardar(Inscripcion))
 		{
+			controllerEst.Guardar(Estudiante);
 			mensaje = "Inscripcion Guardada";
 		}
 		else
@@ -106,6 +129,22 @@
 		else
 		{
 			mensaje = "Inscripcion no existe";
+		}
+	}
+
+
+	public void BuscarEstudiante()
+	{
+		EstudianteController controller = new EstudianteController();
+		var estudiante = controller.Buscar(Estudiante.EstudianteId);
+
+		if (estudiante !=null)
+		{
+			Estudiante = estudiante;
+		}
+		else
+		{
+			mensaje = "Estudiante no existe";
 		}
 	}
 
@@ -131,6 +170,14 @@
 	{
 		mensaje = "";
 		this.Inscripcion = new Inscripcion();
+	}
+
+	public void CalcularMonto()
+	{
+		if (Inscripcion !=null)
+		{
+			Inscripcion.Balance = Inscripcion.Monto * Inscripcion.Tomados;
+		}
 	}
 
 }

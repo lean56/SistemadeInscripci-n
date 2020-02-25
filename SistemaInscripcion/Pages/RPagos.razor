@@ -1,0 +1,103 @@
+﻿@page "/pago"
+<h3>Registro de pagos</h3>
+<EditForm Model="Pago" OnValidSubmit="Guardar">
+	<DataAnnotationsValidator />
+
+	<div class="form-group">
+		<label for="pagoid">Pago Id</label>
+		<div class="input-group col-md-3">
+			<InputNumber @bind-Value="@Pago.PagoId" class="form-control" />
+			<ValidationMessage For="@(()=>Pago.PagoId)" />
+			<button type="button" class="btn btn-outline-info" @onclick="Buscar">Buscar</button>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="fecha">Fecha</label>
+		<InputDate @bind-Value="@Pago.Fecha" class="form-control" />
+		<ValidationMessage For="@(()=>Pago.Fecha)" />
+	</div>
+
+	<div class="form-group">
+		<label for="InscripcionId">InscripcionId</label>
+		<InputNumber @bind-Value="@Pago.InscripcionId" class="form-control" />
+		<ValidationMessage For="@(()=>Pago.InscripcionId)" />
+	</div>
+
+	<div class="form-group">
+		<label for="monto">Monto</label>
+		<InputNumber @bind-Value="@Pago.Monto" class="form-control" />
+		<ValidationMessage For="@(()=>Pago.Monto)" />
+	</div>
+
+	<div class="form-group">
+		<button type="button" class="btn btn-outline-secondary" @onclick="Limpiar">Limpiar</button>
+		<button type="submit" class="btn btn-outline-primary">Guardar</button>
+		<button type="button" class="btn btn-outline-danger" @onclick="Eliminar">Eliminar</button>
+	</div>
+	<h5 class="text-success">@mensaje</h5>
+</EditForm>
+
+@code {
+
+	public Pagos Pago = new Pagos();
+	public string mensaje = "";
+
+	public void Guardar()
+	{
+		PagosController controller = new PagosController();
+
+		if (controller.Guardar(Pago))
+		{
+			mensaje = "Pago Guardado";
+			this.Pago = new Pagos();
+		}
+		else
+		{
+			this.Pago = new Pagos();
+			mensaje = "Error al guardar Pago";
+		}
+	}
+
+	public void Buscar()
+	{
+		PagosController controller = new PagosController();
+
+		var pago = controller.Buscar(Pago.PagoId);
+
+		if (pago != null)
+		{
+			Pago = pago;
+		}
+		else
+		{
+			mensaje = "Pago no existe";
+		}
+	}
+
+	public void Eliminar()
+	{
+		PagosController controller = new PagosController();
+
+		var pago = controller.Buscar(Pago.PagoId);
+
+		if (pago != null)
+		{
+			controller.Eliminar(Pago.PagoId);
+			mensaje = "Pago Eliminado";
+		}
+		else
+		{
+			this.Pago = new Pagos();
+			mensaje = "Error al Eliminar Pago";
+		}
+	}
+
+	public void Limpiar()
+	{
+		mensaje = "";
+		this.Pago = new Pagos();
+	}
+
+}
+

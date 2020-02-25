@@ -1,0 +1,37 @@
+﻿@page "/cpagos"
+<h3>Consulta de Pagos</h3>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>PagoId</th>
+			<th>Fecha</th>
+			<th>InscripcionId</th>
+			<th>Monto</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in lista)
+		{
+			<tr>
+				<th>@item.PagoId</th>
+				<th>@item.Fecha.ToString("dd/MM/yyyy")</th>
+				<th>@item.InscripcionId</th>
+				<th>@item.Monto</th>
+				<td><a class="btn btn-sm btn-outline-primary" href="pago">Ver</a></td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+@code {
+
+	public List<Pagos> lista;
+
+	protected override void OnInitialized()
+	{
+		PagosController Controller = new PagosController();
+
+		lista = Controller.GetPagos(e => true);
+	}
+}

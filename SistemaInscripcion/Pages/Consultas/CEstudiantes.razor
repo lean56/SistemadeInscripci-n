@@ -1,0 +1,37 @@
+﻿@page "/cestudiante"
+<h3>Consulta de Estudiantes</h3>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>Estudiante Id</th>
+			<th>Matricula</th>
+			<th>Nombres</th>
+			<th>Balance</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in lista)
+		{
+			<tr>
+				<th>@item.EstudianteId</th>
+				<th>@item.Matricula</th>
+				<th>@item.Nombres</th>
+				<th>@item.Balance</th>
+				<td><a class="btn btn-sm btn-outline-primary" href="estudiante">Ver</a></td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+@code {
+
+	public List<Estudiantes> lista;
+
+	protected override void OnInitialized()
+	{
+		EstudianteController controller = new EstudianteController();
+
+		lista = controller.GetEstudiantes(e => true);
+	}
+}
