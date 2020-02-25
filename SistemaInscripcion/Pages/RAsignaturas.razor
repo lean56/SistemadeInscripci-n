@@ -1,4 +1,4 @@
-﻿@page "/asignatura"
+﻿@page "/asignatura/{AsignaturaId:int}"
 <h3>Registro de Asignaturas</h3>
 <EditForm Model="Asignatura" OnValidSubmit="Guardar">
 	<DataAnnotationsValidator />
@@ -47,8 +47,21 @@
 
 @code {
 
+	[Parameter] public int AsignaturaId { get; set; } 
+
 	public Asignaturas Asignatura = new Asignaturas();
 	public string mensaje = "";
+
+	protected override void OnInitialized()
+	{
+		Asignatura = new Asignaturas();
+
+		if (AsignaturaId != 0)
+		{
+		    Asignatura.AsignaturaId = AsignaturaId;
+			Buscar();
+		}
+	}
 
 	public void Guardar()
 	{

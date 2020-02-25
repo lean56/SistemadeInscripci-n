@@ -1,4 +1,4 @@
-﻿@page "/pago"
+﻿@page "/pago/{PagoId:int}"
 <h3>Registro de pagos</h3>
 <EditForm Model="Pago" OnValidSubmit="Guardar">
 	<DataAnnotationsValidator />
@@ -40,8 +40,22 @@
 
 @code {
 
+	
+	[Parameter] public int PagoId { get; set; } 
+
 	public Pagos Pago = new Pagos();
 	public string mensaje = "";
+
+		protected override void OnInitialized()
+	{
+		Pago = new Pagos();
+
+		if (PagoId != 0)
+		{
+		    Pago.PagoId = PagoId;
+			Buscar();
+		}
+	}
 
 	public void Guardar()
 	{

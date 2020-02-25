@@ -1,4 +1,4 @@
-﻿@page "/inscripcion"
+﻿@page "/inscripcion/{InscripcionId:int}"
 <h3>RInscripcion</h3>
 
 <EditForm Model="Inscripcion" OnValidSubmit="Guardar">
@@ -18,13 +18,8 @@
 		<div class="input-group col-sm-3">
 			<InputNumber @bind-Value="@Inscripcion.EstudianteId" class="form-control"/>
 			<ValidationMessage For="@(()=>Inscripcion.EstudianteId)" />
-			<button type="button" class="btn btn-outline-info" @onclick="BuscarEstudiante">Buscar Estudiante</button>
+			<button type="button" class="btn btn-outline-info">Buscar Estudiante</button>
 		</div>
-	</div>
-	<div class="form-group">
-		<label for="estudiante">Nombre</label>
-		<InputText @bind-Value="@Estudiante.Nombres" class="form-control" />
-		<ValidationMessage For="@(()=>Estudiante.Nombres)" />
 	</div>
 
 	<div class="form-group">
@@ -83,13 +78,22 @@
 
 
 @code {
+	[Parameter] public int InscripcionId { get; set; } 
 
 	public Inscripcion Inscripcion = new Inscripcion();
-	public Estudiantes Estudiante = new Estudiantes();
-
 
 	public string mensaje = "";
 
+	protected override void OnInitialized()
+	{
+		Inscripcion = new Inscripcion();
+
+		if (InscripcionId != 0)
+		{
+		    Inscripcion.InscripcionId = InscripcionId;
+			Buscar();
+		}
+	}
 
 
 	public void Guardar()
@@ -121,22 +125,6 @@
 		else
 		{
 			mensaje = "Inscripcion no existe";
-		}
-	}
-
-
-	public void BuscarEstudiante()
-	{
-		EstudianteController controller = new EstudianteController();
-		var estudiante = controller.Buscar(Estudiante.EstudianteId);
-
-		if (estudiante !=null)
-		{
-			Estudiante = estudiante;
-		}
-		else
-		{
-			mensaje = "Estudiante no existe";
 		}
 	}
 
