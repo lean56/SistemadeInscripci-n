@@ -11,25 +11,19 @@ namespace SistemaInscripcion.Controller
 {
     public class InscripncionController
     {
-        public Estudiantes Estudiante { get; set; }
-
         public bool Guardar(Inscripcion inscripcion)
         {
             Contexto contexto = new Contexto();
             EstudianteController controllerEst = new EstudianteController();
             bool paso = false;
-
             try
             {
                 if (inscripcion.InscripcionId == 0)
                 {
-                   // var estudiante = controllerEst.Buscar(Estudiante.EstudianteId);
-
-                   // if (estudiante != null)
-                   // {
-                   //     estudiante.Balance += inscripcion.Monto;
-                   //}
-                  //  estudiante.Balance += inscripcion.Monto;
+                    var estudiante = controllerEst.Buscar(inscripcion.EstudianteId);
+                    estudiante.Balance += inscripcion.Balance;
+        
+                    controllerEst.Guardar(estudiante);
                     paso = Insertar(inscripcion);
                 }
                 else
@@ -49,6 +43,7 @@ namespace SistemaInscripcion.Controller
     private bool Insertar(Inscripcion inscripcion)
     {
         Contexto contexto = new Contexto();
+
         bool paso = false;
 
             try
@@ -67,13 +62,20 @@ namespace SistemaInscripcion.Controller
      private bool Modificar(Inscripcion inscripcion)
         {
             Contexto contexto = new Contexto();
+            EstudianteController controllerEst = new EstudianteController();
             bool paso = false;
 
             try
             {
+                var estudiante = controllerEst.Buscar(inscripcion.EstudianteId);
+                var anterior = Buscar(inscripcion.InscripcionId);
+
+                estudiante.Balance -= anterior.Balance;
                 contexto.Inscripcion.Add(inscripcion);
                 contexto.Entry(inscripcion).State = EntityState.Modified;
                 paso = contexto.SaveChanges() > 0;
+                controllerEst.Guardar(estudiante);
+
             }
             catch (Exception)
             {
