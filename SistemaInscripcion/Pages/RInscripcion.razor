@@ -1,167 +1,140 @@
 ﻿@page "/inscripcion/{InscripcionId:int}"
 @inject IToastService toastService
+
 <h3>Registro de Inscripcion</h3>
 
 <EditForm Model="Inscripcion" OnValidSubmit="Guardar">
 	<DataAnnotationsValidator />
 
-	<div class="form-group">
-		<label for="InscripcionId">Inscripcion Id</label>
-		<div class="input-group col-sm-3">
-			<InputNumber @bind-Value="@Inscripcion.InscripcionId" class="form-control" />
-			<ValidationMessage For="@(()=>Inscripcion.InscripcionId)" />
-			<button type="button" class="btn btn-outline-info" @onclick="Buscar">Buscar</button>
-		</div>
-	</div>
+	<div class="container">
+		<div class="card">
+			<div class="card-body">
 
-	@*<div class="form-group">
-			<label for="Estudianteid">Estudiante Id</label>
-			<div class="input-group col-sm-3">
-				<InputNumber @bind-Value="@Inscripcion.EstudianteId" class="form-control" />
-				<ValidationMessage For="@(()=>Inscripcion.EstudianteId)" />
-				<button type="button" class="btn btn-outline-info" @onclick="BuscarEstudiante">Buscar</button>
+				<div class="form-group row">
+					<!--Inscripcion Id-->
+					<label for="InscripcionId " class="col-auto">Inscripcion Id</label>
+					<div class="input-group  col-sm-3">
+						<InputNumber @bind-Value="@Inscripcion.InscripcionId" class="form-control" />
+						<ValidationMessage For="@(()=>Inscripcion.InscripcionId)" />
+						<div class="input-group-append">
+							<button type="button" class="btn btn-outline-info" @onclick="Buscar">Buscar</button>
+						</div>
+					</div>
+					<!--Fecha-->
+					<label for="fecha">Fecha</label>
+					<div align="right" class="input-group col-md-6">
+						<div class="col-sm-6">
+							<InputDate @bind-Value="@Inscripcion.Fecha" class="form-control" />
+							<ValidationMessage For="@(()=>Inscripcion.Fecha)" />
+						</div>
+					</div>
+				</div>
+				<!--Estudianteid-->
+				<div class="form-group row">
+					<label for="estudianteid">Estudiante</label>
+					<div class="col-md-6 no-padding">
+						<InputSelect @bind-Value="@EstudianteSelect" class="form-control " @onchange="CargarEstudiante" @onclick="CargarEstudiante">
+							<option value="" disabled selected>Seleccione un Estudiante</option>
+							@foreach (var item in ListaEstudiante)
+							{
+								<option value="@item.EstudianteId">@item.Nombres</option>
+							}
+						</InputSelect>
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<!--Semestre-->
+					<label class="col-auto" for="Semestre">Semestre:</label>
+					<div class="col-4">
+						<InputText @bind-Value="@Inscripcion.Semestre" class="form-control" />
+						<ValidationMessage For="@(()=>Inscripcion.Semestre)" />
+					</div>
+					<!--Limite de credito-->
+					<label class="col-auto" for="Limite">Limite de Creditos:</label>
+					<div class="col-4">
+						<InputNumber @bind-Value="@Inscripcion.Limite" class="form-control" @onfocusin="CalcularCreditos" @onfocusout="CalcularCreditos" />
+						<ValidationMessage For="@(()=>Inscripcion.Limite)" />
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label for="Asignatura">Asignatura</label>
+					<div class="col-md-6 no-padding">
+						<!--Asignaturas-->
+						<InputSelect @bind-Value="@AsignaturaSelect" class="form-control" @onchange="CargarAsignatura" @onclick="CargarAsignatura">
+
+							@if (ListaAsignatura.Count == 0)
+							{
+								<option value="">No hay Asigntura Agregada</option>
+							}
+							else
+							{
+								<option value="" disabled selected>Seleccione una Asignatura</option>
+
+								@foreach (var item in ListaAsignatura)
+								{
+									<option value="@item.AsignaturaId">@item.Descripcion</option>
+								}
+
+							}
+						</InputSelect>
+					</div>
+					<!--Precio-->
+					<label class="col-auto" for="Precio">Precio:</label>
+					<div class="col-2">
+						<InputNumber @bind-Value="@Precio" class="form-control"></InputNumber>
+					</div>
+					<button type="button" class="btn btn-outline-primary" @onclick="AgregarAsignatura">Agregar</button>
+				</div>
+
+				<div class="card">
+					<div class="card-body">
+						<table class="table">
+							<thead class="thead-dark">
+								<tr>
+									<th>Id</th>
+									<th>Descripcion</th>
+									<th>Credito</th>
+									<th>Subtotal</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach (var item in Inscripcion.Detalles)
+								{
+									<tr>
+										<th>@item.AsignaturaId</th>
+										<th>@item.DescripcionAsignatura</th>
+										<th>@item.Creditos</th>
+										<th>@item.Subtotal</th>
+										<th><button type="button" class="btn btn-outline-danger btn-sm" @onclick="(()=> EliminarAsigantura(item))">Eliminar</button></th>
+
+									</tr>
+								}
+							</tbody>
+						</table>
+
+						<div class="col-md-2 no-padding">
+							<label>Balance</label>
+							<InputNumber @bind-Value="@Inscripcion.Monto" class="form-control" disabled></InputNumber>
+						</div>
+					</div>
+				</div>
+				<br />
+				<div class="text-center">
+					<button type="button" class="btn btn-outline-secondary" @onclick="Limpiar">Limpiar</button>
+					<button type="button" class="btn btn-outline-success" @onclick="Guardar">Guardar</button>
+					<button type="button" class="btn btn-outline-danger" @onclick="Eliminar">Eliminar</button>
+				</div>
+
+				<h5 class="text-success">@mensaje</h5>
 			</div>
-		</div>*@
-
-	<div class="form-group">
-		<label for="estudianteid">Estudiante</label>
-		<InputSelect @bind-Value="@EstudianteSelect" class="form-control" @onchange="CargarEstudiante" @onclick="CargarEstudiante">
-			<option value="" disabled selected>Seleccione un Estudiante</option>
-			@foreach (var item in ListaEstudiante)
-			{
-				<option value="@item.EstudianteId">@item.Nombres</option>
-			}
-		</InputSelect>
-	</div>
-
-	<div class="form-group">
-		<label for="Semestre">Semestre</label>
-		<InputText @bind-Value="@Inscripcion.Semestre" class="form-control" />
-		<ValidationMessage For="@(()=>Inscripcion.Semestre)" />
-	</div>
-
-	<div class="form-group">
-		<label for="Limite">Limite de Creditos</label>
-		<InputNumber @bind-Value="@Inscripcion.Limite" class="form-control" />
-		<ValidationMessage For="@(()=>Inscripcion.Limite)" />
-	</div>
-
-
-
-	<InputSelect @bind-Value="@AsignaturaSelect" class="form-control" @onchange="CargarAsignatura" @onclick="CargarAsignatura">
-
-		@if (ListaAsignatura.Count == 0)
-		{
-			<option value="">No hay Asigntura Agregada</option>
-		}
-		else
-		{
-			<option value="" disabled selected>Seleccione una Asignatura</option>
-
-			@foreach (var item in ListaAsignatura)
-			{
-				<option value="@item.AsignaturaId">@item.Descripcion</option>
-			}
-
-		}
-	</InputSelect>
-
-	@*<div class="form-row form-group">
-		<div class="form-group col">
-			<label>Asignaturas Id</label>
-			<InputNumber @bind-Value="@Asignatura.AsignaturaId" class="form-control"></InputNumber>
-			<button type="button" class="btn btn-primary" @onclick="BuscarAsignatura">Buscar</button>
 		</div>
-		<div class="form-group col">
-			<label>Asignatura</label>
-			<InputText @bind-Value="@Asignatura.Descripcion" class="form-control"></InputText>
-		</div>
-		<div class="form-group col">
-			<label>Creditos</label>
-			<InputNumber @bind-Value="@Asignatura.Creditos" class="form-control"></InputNumber>
-		</div>*@
-
-
-	<div class="form-group col">
-		<label>Precio</label>
-		<InputNumber @bind-Value="@Precio" class="form-control"></InputNumber>
 	</div>
-	@*</div>*@
-
-	<div class="form-group">
-		<button type="button" class="btn btn-outline-primary" @onclick="AgregarAsignatura">Agregar</button>
-	</div>
-
-	<table class="table">
-		<thead>
-			<tr>
-				<th>Id</th>
-				<th>Descripcion</th>
-				<th>Credito</th>
-				<th>Subtotal</th>
-			</tr>
-		</thead>
-		<tbody>
-
-			@foreach (var item in Inscripcion.Detalles)
-			{
-				<tr>
-					<th>@item.AsignaturaId</th>
-					<th>@item.DescripcionAsignatura</th>
-					<th>@item.Creditos</th>
-					<th>@item.Subtotal</th>
-				</tr>
-			}
-
-		</tbody>
-	</table>
-
-	@*<div class="form-group">
-			<label for="tomado">Creditos Tomados</label>
-			<InputNumber @bind-Value="@Inscripcion.Tomados" class="form-control" @oninput="CalcularCreditos" @onfocusin="CalcularCreditos" @onfocusout="CalcularCreditos"/>
-			<ValidationMessage For="@(()=>Inscripcion.Tomados)" />
-		</div>
-
-		<div class="form-group">
-			<label for="disponible">Creditos Disponible</label>
-			<InputNumber @bind-Value="@Inscripcion.Disponible" class="form-control" disabled />
-			<ValidationMessage For="@(()=>Inscripcion.Disponible)" />
-		</div>
-
-		<div class="form-group">
-			<label for="monto">Monto</label>
-			<InputNumber @bind-Value="@Inscripcion.Monto" class="form-control" @oninput="CalcularCreditos"  @onfocusin="CalcularMonto" @onfocusout="CalcularMonto" />
-			<ValidationMessage For="@(()=>Inscripcion.Monto)" />
-		</div>*@
-
-	@*<div class="form-group">
-			<label for="balance">Balance</label>
-			<InputNumber @bind-Value="@Inscripcion.Balance" class="form-control" disabled/>
-			<ValidationMessage For="@(()=>Inscripcion.Balance)" />
-		</div>*@
-
-	<div class="form-group col">
-		<label>Balance</label>
-		<InputNumber @bind-Value="@Inscripcion.Monto" class="form-control" disabled></InputNumber>
-	</div>
-
-	<div class="form-group">
-		<label for="fecha">Fecha</label>
-		<InputDate @bind-Value="@Inscripcion.Fecha" class="form-control" />
-		<ValidationMessage For="@(()=>Inscripcion.Fecha)" />
-	</div>
-
-	<div class="form-group">
-		<button type="button" class="btn btn-outline-secondary" @onclick="Limpiar">Limpiar</button>
-		<button type="button" class="btn btn-outline-success" @onclick="Guardar">Guardar</button>
-		<button type="button" class="btn btn-outline-danger" @onclick="Eliminar">Eliminar</button>
-	</div>
-
-	<h5 class="text-success">@mensaje</h5>
-
+	<br />
 
 </EditForm>
-
 
 
 @code {
@@ -181,6 +154,7 @@
 	private string mensaje = "";
 
 	private int Precio = 0;
+	private int credito = 0;
 
 	private List<Estudiantes> ListaEstudiante = new List<Estudiantes>();
 	private List<Asignaturas> ListaAsignatura = new List<Asignaturas>();
@@ -265,14 +239,20 @@
 					foreach (var item in Inscripcion.Detalles)
 					{
 						total += item.Subtotal;
+						credito += item.Creditos;
 					}
 
 					Inscripcion.Monto = total;
+					Inscripcion.Tomados = credito;
 				}
 			}
 		}
 	}
 
+	private void EliminarAsigantura(InscripcionDetalle detalle)
+	{
+		Inscripcion.Detalles.Remove(detalle);
+	}
 
 	public void Guardar()
 	{
@@ -280,17 +260,23 @@
 		EstudianteController controllerEst = new EstudianteController();
 
 		Inscripcion.EstudianteId = Convert.ToInt32(EstudianteSelect);
-
-		CalcularMonto();
-		if (controller.Guardar(Inscripcion))
+		if (credito > Inscripcion.Limite )
 		{
-			Limpiar();
-			mensaje = "Inscripcion Guardada";
-			toastService.ShowSuccess("Guardada  Existo", "Atencion");
+			mensaje = "Los Credito Tomados no pueden ser Mayor a los Limites";
 		}
 		else
 		{
-			mensaje = "Error al guardar Inscripcion";
+			CalcularMonto();
+			if (controller.Guardar(Inscripcion))
+			{
+				Limpiar();
+				mensaje = "Inscripcion Guardada";
+				toastService.ShowSuccess("Guardada  Existo", "Atencion");
+			}
+			else
+			{
+				mensaje = "Error al guardar Inscripcion";
+			}
 		}
 	}
 
@@ -348,7 +334,7 @@
 	{
 		if (Inscripcion != null)
 		{
-			Inscripcion.Disponible = Inscripcion.Limite - Inscripcion.Tomados;
+			Inscripcion.Disponible = Inscripcion.Limite - credito;
 		}
 		else
 		{

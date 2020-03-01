@@ -14,27 +14,25 @@ namespace SistemaInscripcion.Controller
         public bool Guardar(Inscripcion inscripcion)
         {
             Contexto contexto = new Contexto();
-          //  EstudianteController controllerEst = new EstudianteController();
+            EstudianteController controllerEst = new EstudianteController();
             bool paso = false;
             try
             {
                 if (inscripcion.InscripcionId == 0)
                 {
-                //    var estudiante = controllerEst.Buscar(inscripcion.EstudianteId);
-               //     estudiante.Balance += inscripcion.Balance;
+                    var estudiante = controllerEst.Buscar(inscripcion.EstudianteId);
+                   estudiante.Balance += inscripcion.Monto;
         
-                //    controllerEst.Guardar(estudiante);
+                   controllerEst.Guardar(estudiante);
                     paso = Insertar(inscripcion);
                 }
                 else
                 {
                     paso = Modificar(inscripcion);
-                }
-                
+                }             
             }
             catch (Exception)
             {
-
                 throw;
             }
             return paso;
@@ -53,7 +51,6 @@ namespace SistemaInscripcion.Controller
             }
             catch (Exception)
             {
-
                 throw;
             }
             return paso;
@@ -63,51 +60,46 @@ namespace SistemaInscripcion.Controller
         {
             Contexto contexto = new Contexto();
             InscripncionController ed = new InscripncionController();
-           // EstudianteController controllerEst = new EstudianteController();
+            EstudianteController controllerEst = new EstudianteController();
             bool paso = false;
        
             try
             {
-                //  var estudiante = controllerEst.Buscar(inscripcion.EstudianteId);
-                // var anterior = Buscar(inscripcion.InscripcionId);
-
-                //  estudiante.Balance -= anterior.Balance;
-                //   contexto.Inscripcion.Add(inscripcion);
+                var estudiante = controllerEst.Buscar(inscripcion.EstudianteId);
                 var anterior = Buscar(inscripcion.InscripcionId);
-                foreach (var item in anterior.Detalles)
-                {
+
+                estudiante.Balance -= anterior.Monto;
+                contexto.Inscripcion.Add(inscripcion);
+
+               foreach (var item in anterior.Detalles)
+               {
                     if (!inscripcion.Detalles.Any(p => p.InscripcionDetalleId == item.InscripcionDetalleId))
                     {
                         contexto.Entry(item).State = EntityState.Deleted;
                     }
-                }
+               }
 
-                foreach (var item in inscripcion.Detalles)
-                {
-                    if (item.InscripcionDetalleId == 0)
-                    {
-                        contexto.Entry(item).State = EntityState.Added;
-                    }
-                    else
-                    {
-                        contexto.Entry(item).State = EntityState.Modified;
-                    }
-                }
+              foreach (var item in inscripcion.Detalles)
+              {
+                   if (item.InscripcionDetalleId == 0)
+                   {
+                       contexto.Entry(item).State = EntityState.Added;
+                   }
+                   else
+                   {
+                       contexto.Entry(item).State = EntityState.Modified;
+                   }
+              }
 
+                estudiante.Balance += inscripcion.Monto;
+                controllerEst.Modificar(estudiante);
 
                 contexto.Entry(inscripcion).State = EntityState.Modified;
 
-
-               //0 estudiante.Balance += inscripcion.Monto;
-
-                paso = contexto.SaveChanges() > 0;
-                
-             //   controllerEst.Modificar(estudiante);
-
+                paso = contexto.SaveChanges() > 0;            
             }
             catch (Exception)
             {
-
                 throw;
             }
             return paso;
@@ -125,11 +117,9 @@ namespace SistemaInscripcion.Controller
                 {
                     inscripcion.Detalles = detallesController.GetInscripcions(A => A.InscripcionId == id);
                 }
-
             }
             catch (Exception)
             {
-
                 throw;
             }
             return inscripcion;
@@ -149,7 +139,6 @@ namespace SistemaInscripcion.Controller
             }
             catch (Exception)
             {
-
                 throw;
             }
             return paso;
@@ -165,7 +154,6 @@ namespace SistemaInscripcion.Controller
             }
             catch (Exception)
             {
-
                 throw;
             }
             return lista;
