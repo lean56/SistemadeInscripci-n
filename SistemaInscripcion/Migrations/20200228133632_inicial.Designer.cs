@@ -9,8 +9,8 @@ using SistemaInscripcion.Data;
 namespace SistemaInscripcion.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200225123329_migration3")]
-    partial class migration3
+    [Migration("20200228133632_inicial")]
+    partial class inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -67,9 +67,6 @@ namespace SistemaInscripcion.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Balance")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("Disponible")
                         .HasColumnType("INTEGER");
 
@@ -96,6 +93,34 @@ namespace SistemaInscripcion.Migrations
                     b.ToTable("Inscripcion");
                 });
 
+            modelBuilder.Entity("SistemaInscripcion.Models.InscripcionDetalle", b =>
+                {
+                    b.Property<int>("InscripcionDetalleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AsignaturaId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Creditos")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("DescripcionAsignatura")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("InscripcionId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Subtotal")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("InscripcionDetalleId");
+
+                    b.HasIndex("InscripcionId");
+
+                    b.ToTable("InscripcionDetalles");
+                });
+
             modelBuilder.Entity("SistemaInscripcion.Models.Pagos", b =>
                 {
                     b.Property<int>("PagoId")
@@ -114,6 +139,15 @@ namespace SistemaInscripcion.Migrations
                     b.HasKey("PagoId");
 
                     b.ToTable("Pagos");
+                });
+
+            modelBuilder.Entity("SistemaInscripcion.Models.InscripcionDetalle", b =>
+                {
+                    b.HasOne("SistemaInscripcion.Models.Inscripcion", null)
+                        .WithMany("Detalles")
+                        .HasForeignKey("InscripcionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,8 +21,14 @@ namespace SistemaInscripcion.Models
         public int Tomados { get; set; }
         public int Disponible { get; set; }
         public DateTime Fecha { get; set; }
+        [Required(ErrorMessage ="Debes indicar el Precio")]
+        [Range(minimum:1,maximum:100000)]
         public int Monto { get; set; }
-        public int Balance { get; set; }
+        // public int Balance { get; set; }
+
+        [ForeignKey("InscripcionId")]
+        public List<InscripcionDetalle> Detalles { get; set; }
+
 
         public Inscripcion()
         {
@@ -33,7 +40,7 @@ namespace SistemaInscripcion.Models
             EstudianteId = 0;
             Fecha = DateTime.Now;
             Monto = 0;
-            Balance = 0;
+            Detalles = new List<InscripcionDetalle>();
         }
     }
 }

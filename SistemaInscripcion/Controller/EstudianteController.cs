@@ -51,7 +51,7 @@ namespace SistemaInscripcion.Controller
             return paso;
         }
 
-        private bool Modificar(Estudiantes estudiante)
+        public bool Modificar(Estudiantes estudiante)
         {
             Contexto contexto = new Contexto();
             bool paso = false;
