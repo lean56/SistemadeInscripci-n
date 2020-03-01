@@ -130,11 +130,15 @@ namespace SistemaInscripcion.Controller
             Contexto contexto = new Contexto();
             bool paso = false;
             Inscripcion inscripcion = new Inscripcion();
+            EstudianteController controllerEst = new EstudianteController();
 
             try
             {
                 inscripcion = contexto.Inscripcion.Find(id);
-                contexto.Entry(inscripcion).State = EntityState.Deleted;
+                contexto.Estudiantes.Find(inscripcion.EstudianteId).Balance -= inscripcion.Monto;
+
+                contexto.Inscripcion.Remove(inscripcion);
+               // contexto.Entry(inscripcion).State = EntityState.Deleted;
                 paso = contexto.SaveChanges() > 0;
             }
             catch (Exception)

@@ -308,6 +308,7 @@
 		if (inscripcion != null)
 		{
 			controller.Eliminar(Inscripcion.InscripcionId);
+			Limpiar();
 			mensaje = "Inscripcion Eliminada";
 		}
 		else
