@@ -19,7 +19,8 @@ namespace SistemaInscripcion.Controller
             {
                 if (pago.PagoId == 0)
                 {
-                    paso = Insertar(pago);
+                   // contexto.SaveChanges();
+                      paso = Insertar(pago);
                 }
                 else
                 {
@@ -41,6 +42,8 @@ namespace SistemaInscripcion.Controller
 
             try
             {
+                contexto.Estudiantes.Find(pago.EstudianteId).Balance -= pago.Monto;
+
                 contexto.Pagos.Add(pago);
                 paso = contexto.SaveChanges() > 0;
             }

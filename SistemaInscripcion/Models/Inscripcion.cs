@@ -11,13 +11,13 @@ namespace SistemaInscripcion.Models
     {
         [Key]
         public int InscripcionId { get; set; }
-
+        [Required]
         public int EstudianteId { get; set; }
         [Required(ErrorMessage = "El Semestre es Obligatorio!!!")]
-
         public string Semestre { get; set; }
         [Range(minimum: 1, maximum: 28, ErrorMessage = "El limite de creditos es 28")]
         public int Limite { get; set; }
+        [Required]
         [Range(minimum: 1, maximum: 28, ErrorMessage = "El limite de creditos tomado es 28")]
         public int Tomados { get; set; }
         public int Disponible { get; set; }

@@ -45,7 +45,7 @@ namespace SistemaInscripcion.Migrations
                     InscripcionId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     EstudianteId = table.Column<int>(nullable: false),
-                    Semestre = table.Column<string>(nullable: true),
+                    Semestre = table.Column<string>(nullable: false),
                     Limite = table.Column<int>(nullable: false),
                     Tomados = table.Column<int>(nullable: false),
                     Disponible = table.Column<int>(nullable: false),
@@ -64,7 +64,7 @@ namespace SistemaInscripcion.Migrations
                     PagoId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Fecha = table.Column<DateTime>(nullable: false),
-                    InscripcionId = table.Column<int>(nullable: false),
+                    EstudianteId = table.Column<int>(nullable: false),
                     Monto = table.Column<int>(nullable: false)
                 },
                 constraints: table =>

@@ -18,10 +18,18 @@
 		<ValidationMessage For="@(()=>Pago.Fecha)" />
 	</div>
 
-	<div class="form-group">
-		<label for="InscripcionId">InscripcionId</label>
-		<InputNumber @bind-Value="@Pago.InscripcionId" class="form-control" />
-		<ValidationMessage For="@(()=>Pago.InscripcionId)" />
+	<!--Estudianteid-->
+	<div class="form-group row">
+		<label for="estudianteid">Estudiante</label>
+		<div class="col-md-6 no-padding">
+			<InputSelect @bind-Value="@EstudianteSelect" class="form-control " @onchange="CargarEstudiante" @onclick="CargarEstudiante">
+				<option value="" disabled selected>Seleccione un Estudiante</option>
+				@foreach (var item in ListaEstudiante)
+				{
+					<option value="@item.EstudianteId">@item.Nombres</option>
+				}
+			</InputSelect>
+		</div>
 	</div>
 
 	<div class="form-group">
@@ -33,43 +41,95 @@
 	<div class="form-group">
 		<button type="button" class="btn btn-outline-secondary" @onclick="Limpiar">Limpiar</button>
 		<button type="submit" class="btn btn-outline-primary">Guardar</button>
-		<button type="button" class="btn btn-outline-danger" @onclick="Eliminar">Eliminar</button>
+		@*<button type="button" class="btn btn-outline-danger" @onclick="Eliminar">Eliminar</button>*@
 	</div>
 	<h5 class="text-success">@mensaje</h5>
 </EditForm>
 
 @code {
 
-	
-	[Parameter] public int PagoId { get; set; } 
+
+	[Parameter] public int PagoId { get; set; }
 
 	public Pagos Pago = new Pagos();
 	public string mensaje = "";
 
-		protected override void OnInitialized()
+	EstudianteController controllerEst = new EstudianteController();
+
+	private Estudiantes Estudiante { get; set; }
+
+	private List<Estudiantes> ListaEstudiante = new List<Estudiantes>();
+
+	private string EstudianteSelect { get; set; }
+
+	protected override void OnInitialized()
 	{
+		Estudiante = new Estudiantes();
+
+		ListaEstudiante = controllerEst.GetEstudiantes(e => true);
+
 		Pago = new Pagos();
 
 		if (PagoId != 0)
 		{
-		    Pago.PagoId = PagoId;
+			Pago.PagoId = PagoId;
 			Buscar();
 		}
 	}
+
+	private void CargarEstudiante()
+	{
+		try
+		{
+			Estudiante = controllerEst.Buscar(Convert.ToInt32(EstudianteSelect));
+		}
+		catch (Exception ex)
+		{
+			mensaje = ex.ToString();
+		}
+	}
+
 
 	public void Guardar()
 	{
 		PagosController controller = new PagosController();
 
-		if (controller.Guardar(Pago))
+
+
+		if (EstudianteSelect == null)
 		{
-			mensaje = "Pago Guardado";
-			this.Pago = new Pagos();
+			mensaje = "Debe seleccionar un Estudiante";
 		}
 		else
 		{
-			this.Pago = new Pagos();
-			mensaje = "Error al guardar Pago";
+			Estudiante.EstudianteId = Convert.ToInt32(EstudianteSelect);
+			Pago.EstudianteId = Convert.ToInt32(EstudianteSelect);
+
+			if (Pago.Monto <= 0)
+			{
+				mensaje = "Digite el monto a pagar";
+			}
+			else
+			{
+				if (Pago.Monto > Estudiante.Balance)
+				{
+					mensaje = "El pago es mayor a la Deuda, El Balance es: " + Estudiante.Balance;
+				}
+				else
+				{
+					if (controller.Guardar(Pago))
+					{
+						mensaje = "Pago realizado con Exito";
+						this.Pago = new Pagos();
+					}
+					else
+					{
+						this.Pago = new Pagos();
+						mensaje = "Error al guardar Pago";
+					}
+				}
+			}
+
 		}
 	}
 
@@ -85,6 +145,7 @@
 		}
 		else
 		{
+			Limpiar();
 			mensaje = "Pago no existe";
 		}
 	}

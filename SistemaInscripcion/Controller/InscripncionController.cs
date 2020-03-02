@@ -20,10 +20,7 @@ namespace SistemaInscripcion.Controller
             {
                 if (inscripcion.InscripcionId == 0)
                 {
-                    var estudiante = controllerEst.Buscar(inscripcion.EstudianteId);
-                   estudiante.Balance += inscripcion.Monto;
-        
-                   controllerEst.Guardar(estudiante);
+                   
                     paso = Insertar(inscripcion);
                 }
                 else
@@ -41,11 +38,16 @@ namespace SistemaInscripcion.Controller
     private bool Insertar(Inscripcion inscripcion)
     {
         Contexto contexto = new Contexto();
+        EstudianteController controllerEst = new EstudianteController();
 
-        bool paso = false;
+            bool paso = false;
 
             try
             {
+                var estudiante = controllerEst.Buscar(inscripcion.EstudianteId);
+                estudiante.Balance += inscripcion.Monto;
+
+                controllerEst.Guardar(estudiante);
                 contexto.Inscripcion.Add(inscripcion);
                 paso = contexto.SaveChanges() > 0;
             }

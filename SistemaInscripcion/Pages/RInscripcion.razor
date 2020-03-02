@@ -133,6 +133,7 @@
 		</div>
 	</div>
 	<br />
+	<DataAnnotationsValidator />
 
 </EditForm>
 
@@ -211,7 +212,7 @@
 		}
 		else
 		{
-			if (Precio == 0)
+			if (Precio >= 0)
 			{
 				mensaje = "El precio es Obligatorio";
 			}

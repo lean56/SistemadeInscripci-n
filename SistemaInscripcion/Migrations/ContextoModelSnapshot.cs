@@ -81,6 +81,7 @@ namespace SistemaInscripcion.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Semestre")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Tomados")
@@ -125,11 +126,11 @@ namespace SistemaInscripcion.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("EstudianteId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("InscripcionId")
-                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Monto")
                         .HasColumnType("INTEGER");
