@@ -44,6 +44,8 @@
 		}
 	</tbody>
 </table>
+<h5 class="text-success">@mensaje</h5>
+
 
 @code {
 
@@ -51,6 +53,7 @@
 
 	private string Filtro { get; set; }
 	private string Criterio { get; set; }
+	private string mensaje;
 
 
 	protected override void OnInitialized()
@@ -66,20 +69,35 @@
 
 		try
 		{
-			switch (Filtro)
+			if (Filtro == null)
 			{
-				case "Todo":
-					lista = controller.GetEstudiantes(e => true);
-					break;
-				case "Id":
-					lista = controller.GetEstudiantes(e => e.EstudianteId == Convert.ToInt32(Criterio));
-					break;
-				case "Matricula":
-					lista = controller.GetEstudiantes(e => e.Matricula == Criterio);
-					break;
-				case "Nombres":
-					lista = controller.GetEstudiantes(e => e.Nombres == Criterio);
-					break;
+				mensaje = "Debe seleccionar un Criterio";
+			}
+			else
+			{
+				if (lista.Count==0)
+				{
+					mensaje = "No hay Estudiante Registrado";
+				}
+				else
+				{
+					mensaje = "";
+					switch (Filtro)
+					{
+						case "Todo":
+							lista = controller.GetEstudiantes(e => true);
+							break;
+						case "Id":
+							lista = controller.GetEstudiantes(e => e.EstudianteId == Convert.ToInt32(Criterio));
+							break;
+						case "Matricula":
+							lista = controller.GetEstudiantes(e => e.Matricula == Criterio);
+							break;
+						case "Nombres":
+							lista = controller.GetEstudiantes(e => e.Nombres == Criterio);
+							break;
+					}
+				}		
 			}
 		}
 		catch (Exception)
