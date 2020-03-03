@@ -35,7 +35,7 @@
 
 
 <table class="table">
-	<thead>
+	<thead class="thead-light">
 		<tr>
 			<th>PagoId</th>
 			<th>Fecha</th>
@@ -73,8 +73,6 @@
 
 	protected override void OnInitialized()
 	{
-		PagosController Controller = new PagosController();
-
 		lista = new List<Pagos>();
         DesdeFecha = DateTime.Now;
 		HastaFecha = DateTime.Now;

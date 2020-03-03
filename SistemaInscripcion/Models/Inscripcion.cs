@@ -13,7 +13,7 @@ namespace SistemaInscripcion.Models
         public int InscripcionId { get; set; }
         [Required]
         public int EstudianteId { get; set; }
-        [Required(ErrorMessage = "El Semestre es Obligatorio!!!")]
+        [Required(ErrorMessage = "Debe ingresar el semestre")]
         public string Semestre { get; set; }
         [Range(minimum: 1, maximum: 28, ErrorMessage = "El limite de creditos es 28")]
         public int Limite { get; set; }

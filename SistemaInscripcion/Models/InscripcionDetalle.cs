@@ -10,10 +10,19 @@ namespace SistemaInscripcion.Models
     {
         [Key]
         public int InscripcionDetalleId { get; set; }
+        [Required]
         public int InscripcionId { get; set; }
+        [Required]
+
         public int AsignaturaId { get; set; }
+        [Required]
+
         public string DescripcionAsignatura { get; set; }
+        [Required]
+
         public int Creditos { get; set; }
+        [Required]
+
         public int Subtotal { get; set; }
 
         public InscripcionDetalle()

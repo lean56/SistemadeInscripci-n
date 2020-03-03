@@ -13,9 +13,9 @@ namespace SistemaInscripcion.Migrations
                 {
                     AsignaturaId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Codigo = table.Column<string>(nullable: true),
-                    Descripcion = table.Column<string>(nullable: true),
-                    PreRequisito = table.Column<string>(nullable: true),
+                    Codigo = table.Column<string>(nullable: false),
+                    Descripcion = table.Column<string>(nullable: false),
+                    PreRequisito = table.Column<string>(nullable: false),
                     Creditos = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -29,8 +29,8 @@ namespace SistemaInscripcion.Migrations
                 {
                     EstudianteId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Matricula = table.Column<string>(nullable: true),
-                    Nombres = table.Column<string>(nullable: true),
+                    Matricula = table.Column<string>(nullable: false),
+                    Nombres = table.Column<string>(nullable: false),
                     Balance = table.Column<int>(nullable: false)
                 },
                 constraints: table =>

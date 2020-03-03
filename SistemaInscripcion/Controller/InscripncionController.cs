@@ -13,14 +13,11 @@ namespace SistemaInscripcion.Controller
     {
         public bool Guardar(Inscripcion inscripcion)
         {
-            Contexto contexto = new Contexto();
-            EstudianteController controllerEst = new EstudianteController();
             bool paso = false;
             try
             {
                 if (inscripcion.InscripcionId == 0)
-                {
-                   
+                {                 
                     paso = Insertar(inscripcion);
                 }
                 else

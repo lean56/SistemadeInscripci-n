@@ -9,7 +9,7 @@ using SistemaInscripcion.Data;
 namespace SistemaInscripcion.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200301210122_inicial")]
+    [Migration("20200303154449_inicial")]
     partial class inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,15 +25,18 @@ namespace SistemaInscripcion.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Codigo")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Creditos")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Descripcion")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PreRequisito")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("AsignaturaId");
@@ -51,9 +54,11 @@ namespace SistemaInscripcion.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Matricula")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Nombres")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("EstudianteId");

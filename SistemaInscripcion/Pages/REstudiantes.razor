@@ -27,7 +27,7 @@
 
 	<div class="form-group">
 		<label for="balance">Balance</label>
-		<InputNumber @bind-Value="@Estudiante.Balance" class="form-control" />
+		<InputNumber @bind-Value="@Estudiante.Balance" class="form-control" disabled />
 		<ValidationMessage For="@(()=>Estudiante.Balance)" />
 	</div>
 

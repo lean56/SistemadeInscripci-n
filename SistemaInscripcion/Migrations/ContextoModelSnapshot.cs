@@ -23,15 +23,18 @@ namespace SistemaInscripcion.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Codigo")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Creditos")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Descripcion")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PreRequisito")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("AsignaturaId");
@@ -49,9 +52,11 @@ namespace SistemaInscripcion.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Matricula")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Nombres")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("EstudianteId");
