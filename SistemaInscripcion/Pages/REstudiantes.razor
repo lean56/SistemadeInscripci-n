@@ -104,6 +104,7 @@
 
 		if (estudiante != null)
 		{
+			Limpiar();
 			Estudiante = estudiante;
 		}
 		else
@@ -120,8 +121,15 @@
 
 		if (estudiante != null)
 		{
-			controller.Eliminar(Estudiante.EstudianteId);
-			mensaje = "Estudiante Eliminado";
+			if (Estudiante.Balance > 0)
+			{
+				mensaje = "No se puede Eliminar, Este estudiante tiene un balance pendiente de:" + Estudiante.Balance;
+			}
+			else
+			{
+				controller.Eliminar(Estudiante.EstudianteId);
+				mensaje = "Estudiante Eliminado";
+			}
 		}
 		else
 		{

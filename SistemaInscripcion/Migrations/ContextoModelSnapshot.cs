@@ -110,6 +110,7 @@ namespace SistemaInscripcion.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("DescripcionAsignatura")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("InscripcionId")

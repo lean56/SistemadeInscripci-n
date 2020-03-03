@@ -80,7 +80,7 @@ namespace SistemaInscripcion.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     InscripcionId = table.Column<int>(nullable: false),
                     AsignaturaId = table.Column<int>(nullable: false),
-                    DescripcionAsignatura = table.Column<string>(nullable: true),
+                    DescripcionAsignatura = table.Column<string>(nullable: false),
                     Creditos = table.Column<int>(nullable: false),
                     Subtotal = table.Column<int>(nullable: false)
                 },
