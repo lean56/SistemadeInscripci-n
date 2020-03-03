@@ -262,20 +262,20 @@
 		EstudianteController controllerEst = new EstudianteController();
 
 		Inscripcion.EstudianteId = Convert.ToInt32(EstudianteSelect);
-		if (credito > Inscripcion.Limite )
+		if (credito > Inscripcion.Limite)
 		{
 			mensaje = "Los Credito Tomados no pueden ser Mayor a los Limites";
 		}
 		else
 		{
-			if (Inscripcion.Semestre =="")
+			if (Inscripcion.Semestre == "")
 			{
 				mensaje = "debes llenar todos los datos";
 			}
 			else
 			{
 				mensaje = "";
-				CalcularMonto();
+				CalcularCreditos();
 				if (controller.Guardar(Inscripcion))
 				{
 					Limpiar();
@@ -332,14 +332,6 @@
 	{
 		mensaje = "";
 		this.Inscripcion = new Inscripcion();
-	}
-
-	public void CalcularMonto()
-	{
-		if (Inscripcion != null)
-		{
-			//Inscripcion.Balance = Inscripcion.Monto * Inscripcion.Tomados;
-		}
 	}
 
 	public void CalcularCreditos()
