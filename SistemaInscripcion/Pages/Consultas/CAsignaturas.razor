@@ -1,6 +1,26 @@
 ﻿@page "/casignatura"
 <h3>Consulta de Asignaturas</h3>
 
+<div class="form-group row">
+	<label for="filtro">Filtro</label>
+	<div class="input-group  col-sm-10">
+		<select class="form-control" @bind="Filtro">
+			<option value="" disabled selected>Seleccione un Criterio</option>
+			<option value="Todo">Todo</option>
+			<option value="Id">Id</option>
+			<option value="codigo">Codigo</option>
+			<option value="descripcion">Descripcion</option>
+			<option value="PreRequisito">Pre-Requisito</option>
+			<option value="credito">Creditos</option>
+		</select>
+
+		<div align="right" class="input-group col-md-8">
+			<label for="criterio"> Criterio&nbsp;&nbsp; </label>
+			<input type="search" class="form-control" @bind-value="Criterio" />
+		</div>
+		<button type="button" class="btn btn-outline-success" @onclick="Buscar">Buscar</button>
+	</div>
+</div>
 <table class="table">
 	<thead>
 		<tr>
@@ -25,15 +45,74 @@
 		}
 	</tbody>
 </table>
+<h5 class="text-success">@mensaje</h5>
 
 @code {
 
-	public List<Asignaturas> lista;
+	private string Filtro { get; set; }
+	private string Criterio { get; set; }
+	private string mensaje;
+
+
+	private List<Asignaturas> lista { get; set; }
+
 
 	protected override void OnInitialized()
 	{
-		AsignaturaController Controller = new AsignaturaController();
+		AsignaturaController controller = new AsignaturaController();
 
-		lista = Controller.GetAsignaturas(e => true);
+		lista = new List<Asignaturas>();
 	}
+
+	private void Buscar()
+	{
+		AsignaturaController controller = new AsignaturaController();
+		try
+		{
+			if (Filtro == null)
+			{
+				mensaje = "Debe seleccionar un Criterio";
+			}
+			else
+			{
+				lista = controller.GetAsignaturas(a => true);
+
+				if (lista.Count == 0)
+				{
+					mensaje = "No hay Asignatura Registrada";
+				}
+				else
+				{
+					mensaje = "";
+					switch (Filtro)
+					{
+						case "Todo":
+							lista = controller.GetAsignaturas(e => true);
+							break;
+						case "Id":
+							lista = controller.GetAsignaturas(e => e.AsignaturaId == Convert.ToInt32(Criterio));
+							break;
+						case "codigo":
+							lista = controller.GetAsignaturas(e => e.Codigo == Criterio);
+							break;
+						case "descripcion":
+							lista = controller.GetAsignaturas(e => e.Descripcion == Criterio);
+							break;
+						case "PreRequisito":
+							lista = controller.GetAsignaturas(e => e.PreRequisito == Criterio);
+							break;
+						case "credito":
+							lista = controller.GetAsignaturas(e => e.Creditos == Convert.ToInt32(Criterio));
+							break;
+					}
+				}
+			}
+		}
+		catch (Exception)
+		{
+
+			throw;
+		}
+	}
+
 }

@@ -10,7 +10,9 @@ namespace SistemaInscripcion.Models
     {
         [Key]
         public int EstudianteId { get; set; }
+        [Required(ErrorMessage ="Debes ingresar la matricula")]
         public string Matricula { get; set; }
+        [Required(ErrorMessage = "Debes ingresar el Nombre")]
         public string Nombres { get; set; }
         public int Balance { get; set; }
         public Estudiantes()

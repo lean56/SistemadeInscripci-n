@@ -10,9 +10,14 @@ namespace SistemaInscripcion.Models
     {
         [Key]
         public int AsignaturaId { get; set; }
+        [Required(ErrorMessage ="Debes ingresar el codigo")]
         public string Codigo { get; set; }
+        [Required(ErrorMessage ="Debe ingresar la descripcion")]
         public string Descripcion { get; set; }
+        [Required(ErrorMessage ="Debes ingresar el Pre-requisito")]
         public string PreRequisito { get; set; }
+        [Required]
+        [Range(minimum:1,maximum:5,ErrorMessage ="Los creditos deben ser de 1 a 5")]
         public int Creditos { get; set; }
         public Asignaturas()
         {
