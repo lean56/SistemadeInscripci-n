@@ -1,13 +1,34 @@
 ﻿@page "/cestudiante"
 <h3>Consulta de Estudiantes</h3>
 
+<div class="form-group row">
+	<label for="filtro">Filtro</label>
+	<div class="input-group  col-sm-10">
+		<select class="form-control" @bind="Filtro">
+			<option value="" disabled selected>Seleccione un Criterio</option>
+			<option value="Todo">Todo</option>
+			<option value="Id">Id</option>
+			<option value="Matricula">Matricula</option>
+			<option value="Nombres">Nombres</option>
+		</select>
+
+		<div align="right" class="input-group col-md-8">
+			<label for="criterio"> Criterio&nbsp;&nbsp; </label>
+			<input type="search"class="form-control" @bind-value="Criterio"/>
+		</div>
+		<button type="button" class="btn btn-outline-success" @onclick="Buscar">Buscar</button>
+	</div>
+</div>
+
+
 <table class="table">
-	<thead>
+	<thead class="thead-light">
 		<tr>
 			<th>Estudiante Id</th>
 			<th>Matricula</th>
 			<th>Nombres</th>
 			<th>Balance</th>
+			<th></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -26,12 +47,46 @@
 
 @code {
 
-	public List<Estudiantes> lista;
+	public List<Estudiantes> lista { get; set; }
+
+	private string Filtro { get; set; }
+	private string Criterio { get; set; }
+
 
 	protected override void OnInitialized()
 	{
 		EstudianteController controller = new EstudianteController();
 
-		lista = controller.GetEstudiantes(e => true);
+		lista = new List<Estudiantes>();
 	}
+
+	private void Buscar()
+	{
+		EstudianteController controller = new EstudianteController();
+
+		try
+		{
+			switch (Filtro)
+			{
+				case "Todo":
+					lista = controller.GetEstudiantes(e => true);
+					break;
+				case "Id":
+					lista = controller.GetEstudiantes(e => e.EstudianteId == Convert.ToInt32(Criterio));
+					break;
+				case "Matricula":
+					lista = controller.GetEstudiantes(e => e.Matricula == Criterio);
+					break;
+				case "Nombres":
+					lista = controller.GetEstudiantes(e => e.Nombres == Criterio);
+					break;
+			}
+		}
+		catch (Exception)
+		{
+
+			throw;
+		}
+	}
+
 }
