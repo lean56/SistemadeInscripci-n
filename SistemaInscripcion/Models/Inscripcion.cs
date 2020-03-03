@@ -11,7 +11,7 @@ namespace SistemaInscripcion.Models
     {
         [Key]
         public int InscripcionId { get; set; }
-        [Required]
+        [Required(ErrorMessage ="Debes seleccionar un estudiante")]
         public int EstudianteId { get; set; }
         [Required(ErrorMessage = "Debe ingresar el semestre")]
         public string Semestre { get; set; }
@@ -22,8 +22,7 @@ namespace SistemaInscripcion.Models
         public int Tomados { get; set; }
         public int Disponible { get; set; }
         public DateTime Fecha { get; set; }
-        [Required(ErrorMessage ="Debes indicar el Precio")]
-        [Range(minimum:1,maximum:100000)]
+        [Range(minimum:1,maximum:1000000)]
         public int Monto { get; set; }
         // public int Balance { get; set; }
 
